@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="pt-BR"><head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#070b1d"><title>Uma mensagem para você</title>
+<style>
+*{box-sizing:border-box}html,body{margin:0;min-height:100%;font-family:system-ui,-apple-system,Segoe UI,Roboto,sans-serif}
+body{overflow:hidden;color:#fff;background:radial-gradient(circle at 50% 20%,#243a78,#111a40 30%,#070b1d 70%,#03050e)}
+canvas{position:fixed;inset:0;width:100%;height:100%;pointer-events:none}
+.wrap{position:relative;z-index:2;min-height:100vh;display:flex;align-items:center;justify-content:center;padding:22px}
+.card{width:min(92vw,430px);min-height:570px;padding:34px 25px 28px;border:1px solid #ffffff29;border-radius:30px;background:linear-gradient(145deg,#ffffff1c,#ffffff08);box-shadow:0 25px 80px #0008,inset 0 1px #fff2;backdrop-filter:blur(18px);display:flex;flex-direction:column;align-items:center;text-align:center;animation:in 1.2s ease both}
+@keyframes in{from{opacity:0;transform:translateY(28px) scale(.96)}to{opacity:1;transform:none}}
+.moon{width:82px;height:82px;border-radius:50%;margin:4px 0 28px;background:radial-gradient(circle at 35% 30%,#fff,#dce8ff 40%,#9bb8ff 75%,#6685d5);box-shadow:0 0 35px #a4c2ffaa;position:relative;animation:pulse 3s ease-in-out infinite}
+.moon:after{content:"";position:absolute;width:72px;height:72px;border-radius:50%;background:#10183b;left:25px;top:-8px}
+@keyframes pulse{50%{transform:scale(1.045);box-shadow:0 0 48px #a4c2ffcc}}
+.small{font-size:12px;letter-spacing:3px;text-transform:uppercase;opacity:.68;margin-bottom:12px}
+h1{font-size:29px;line-height:1.12;margin:0 0 16px;font-weight:750}.lead{font-size:16px;line-height:1.65;opacity:.86;margin:0 auto 27px;max-width:340px}
+button{border:0;border-radius:999px;padding:15px 25px;font-size:16px;font-weight:700;color:#08102a;background:linear-gradient(135deg,#fff,#b9d1ff);box-shadow:0 8px 28px #8bb2ff59;cursor:pointer}
+button:active{transform:scale(.96)}.reveal{display:none;animation:reveal .8s ease both}.reveal.show{display:block}
+@keyframes reveal{from{opacity:0;transform:translateY(18px)}to{opacity:1;transform:none}}
+.quote{font-size:27px;line-height:1.3;font-weight:750;margin:4px 0 10px}.ref{font-size:13px;letter-spacing:2px;text-transform:uppercase;opacity:.65;margin-bottom:20px}
+.text{font-size:15px;line-height:1.7;opacity:.88}.signature{margin-top:22px;font-size:14px;opacity:.72}.controls{position:fixed;z-index:5;right:15px;top:15px}
+.icon{width:42px;height:42px;padding:0;border-radius:50%;background:#ffffff1a;color:#fff;border:1px solid #ffffff26;box-shadow:none}
+.footer{margin-top:auto;padding-top:20px;font-size:11px;opacity:.35}
+</style></head><body>
+<canvas id="stars"></canvas><div class="controls"><button class="icon" id="sound">♪</button></div>
+<div class="wrap"><main class="card"><div class="moon"></div><div class="small">Uma mensagem para você</div>
+<h1>Talvez você tenha chegado aqui no momento certo.</h1>
+<p class="lead">Pare por alguns segundos. Respire. E toque abaixo.</p>
+<div id="start"><button id="open">✨ Quero descobrir</button></div>
+<section class="reveal" id="reveal"><div class="quote">“Não temas, porque eu sou contigo.”</div><div class="ref">Isaías 41:10</div>
+<p class="text">Talvez você não saiba o que acontecerá amanhã. Mas pode descansar sabendo que Deus continua presente. Ele não perdeu o controle da sua história.<br><br>Continue. Um passo de cada vez. Há graça para hoje.</p>
+<div class="signature">Pastor Márcio Ferreira</div></section>
+<div class="footer">Porque todo dia é uma nova oportunidade.</div></main></div>
+<script>
+const c=document.getElementById('stars'),x=c.getContext('2d');let w,h,s=[];
+function resize(){w=c.width=innerWidth*devicePixelRatio;h=c.height=innerHeight*devicePixelRatio;c.style.width=innerWidth+'px';c.style.height=innerHeight+'px';x.setTransform(devicePixelRatio,0,0,devicePixelRatio,0,0);s=Array.from({length:Math.min(120,Math.floor(innerWidth/4))},()=>({x:Math.random()*innerWidth,y:Math.random()*innerHeight,r:Math.random()*1.6+.25,a:Math.random()}))}
+function draw(){x.clearRect(0,0,innerWidth,innerHeight);for(const a of s){a.a+=.008;x.globalAlpha=.25+.55*(.5+.5*Math.sin(a.a*8));x.fillStyle='#fff';x.beginPath();x.arc(a.x,a.y,a.r,0,7);x.fill()}requestAnimationFrame(draw)}
+addEventListener('resize',resize);resize();draw();
+document.getElementById('open').onclick=()=>{document.getElementById('start').style.display='none';document.getElementById('reveal').classList.add('show');navigator.vibrate?.([30,40,60]);for(let i=0;i<28;i++){let e=document.createElement('span');e.textContent='✦';e.style.cssText=`position:fixed;left:50%;top:50%;z-index:10;color:#fff;font-size:${10+Math.random()*16}px;transition:1.1s ease-out;pointer-events:none`;document.body.appendChild(e);requestAnimationFrame(()=>{e.style.transform=`translate(${(Math.random()-.5)*300}px,${(Math.random()-.5)*350}px) rotate(${Math.random()*180}deg)`;e.style.opacity=0});setTimeout(()=>e.remove(),1200)}};
+let ac;document.getElementById('sound').onclick=()=>{ac??=new(window.AudioContext||window.webkitAudioContext)();let o=ac.createOscillator(),g=ac.createGain();o.frequency.value=523.25;g.gain.setValueAtTime(.0001,ac.currentTime);g.gain.exponentialRampToValueAtTime(.06,ac.currentTime+.03);g.gain.exponentialRampToValueAtTime(.0001,ac.currentTime+.55);o.connect(g).connect(ac.destination);o.start();o.stop(ac.currentTime+.6)};
+</script></body></html>
